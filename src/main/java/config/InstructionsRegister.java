@@ -1,5 +1,6 @@
 package config;
 
+import java.io.IOException;
 import java.util.List;
 
 import beans.Pelouse;
@@ -24,8 +25,9 @@ public class InstructionsRegister {
 	/**
 	 * Prend en entrée le fichier contenant les séries d'instruction
 	 * @param path
+	 * @throws IOException 
 	 */
-	public void executeFromFile(String path) {
+	public void executeFromFile(String path) throws IOException {
 		
 		Tuple2<DimensionPelouse, List<Instructions>> dimensionAndInstruction = readFromFile(path);
 		
@@ -41,8 +43,9 @@ public class InstructionsRegister {
 	 * lit le fichier en utilisant IO
 	 * @param path
 	 * @return
+	 * @throws IOException 
 	 */
-	private Tuple2<DimensionPelouse, List<Instructions>> readFromFile(String path) {
+	private Tuple2<DimensionPelouse, List<Instructions>> readFromFile(String path) throws IOException {
 		return IO.getFileContent(path);	
 	}
 	

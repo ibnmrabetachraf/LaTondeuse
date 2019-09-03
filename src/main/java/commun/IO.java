@@ -24,15 +24,16 @@ public class IO {
 	 * fonction lit un fichier et renvoit son contenu sous format d'un tuple de 2 : 
 	 * @param pathToFile
 	 * @return les dimensions de la pelouse et une liste d'instruction pour chaque tondeuse
+	 * @throws IOException 
 	 */
-	public static Tuple2<DimensionPelouse,java.util.List<Instructions>> getFileContent(String pathToFile) {
+	public static Tuple2<DimensionPelouse,java.util.List<Instructions>> getFileContent(String pathToFile) throws IOException {
 
 		Path path = Paths.get(pathToFile);
 		String dimension;
 		DimensionPelouse dimensionPelouse = null ;
 		java.util.List<Instructions> content = new ArrayList<Instructions>();
 
-		try {
+		
 			java.util.List<String> fileContent = Files.readAllLines(path);
 			
 			if(fileContent.isEmpty()) {
@@ -58,20 +59,7 @@ public class IO {
 				content.add(new Instructions(getInitialPos(posDeDepart), getMouvementssAsList(instr)));
 
 			}
-			
-		} catch(java.util.NoSuchElementException e) {
-			System.err.println("Le fichier est mal généré LigneN = position de la tondeuse \n LigneN+1 = les instructions");
-
-		} catch(java.lang.IllegalArgumentException e) {
-			System.err.println("Erreur dans le fichier: Une instruction non reconnu [N,E,W,S] pour les orientations géographiques , [D,G,A] pour les instructions");
-			throw new RuntimeException(e);
-
-		} catch(java.nio.file.NoSuchFileException e) {
-			System.err.println("Ce fichier n'existe pas " +pathToFile);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			 
 
 		return Tuple.of(dimensionPelouse,content);
 	}

@@ -1,5 +1,6 @@
 package laTondeuse.Main;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import config.InstructionsRegister;
@@ -20,7 +21,7 @@ public class Main {
 
 		while(stillRunning) {
 
-			try {
+			
 				System.out.println("	1 -> Lire une série d'instruction d'un fichier");
 				System.out.println("	0 -> exit");
 				int choix = keyboard.nextInt();
@@ -32,10 +33,21 @@ public class Main {
 					stillRunning = false;
 					break;
 				case 1:
+					try {
+						System.out.println("Entrez le path du fichier avec le format correspondant");
+						String path = keyboard2.nextLine();
+						instructionsRegister.executeFromFile(path);
 
-					System.out.println("Entrez le path du fichier avec le format correspondant");
-					String path = keyboard2.nextLine();
-					instructionsRegister.executeFromFile(path);
+					} catch(java.util.NoSuchElementException e) {
+						System.err.println("Le fichier est mal généré LigneN = position de la tondeuse \n LigneN+1 = les instructions");
+
+					} catch(java.lang.IllegalArgumentException e) {
+						System.err.println("Erreur dans le fichier: Une instruction non reconnu [N,E,W,S] pour les orientations géographiques , [D,G,A] pour les instructions");
+
+					} catch(IOException e) {
+						System.err.println("Erreur de lecture du fichier ");
+
+					} 
 					break;
 
 				default:
@@ -45,11 +57,7 @@ public class Main {
 
 				System.out.println("\n\nRejouer?");
 
-			}catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("\n\nRejouer?");
-				continue;
-			}
+			
 		}
 
 
